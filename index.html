@@ -1,0 +1,2124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vardhan Yadav | Portfolio</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.21.2/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --netflix-red: #E50914;
+      --netflix-black: #141414;
+      --netflix-dark-gray: #181818;
+      --netflix-gray: #424242;
+      --netflix-light-gray: #808080;
+      --netflix-white: #FFFFFF;
+      --netflix-gradient: linear-gradient(to bottom, rgba(0,0,0,0.7) 10%, rgba(0,0,0,0));
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+    
+    body {
+      background-color: var(--netflix-black);
+      color: var(--netflix-white);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 4%;
+      height: 68px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--netflix-gradient);
+      z-index: 1000;
+      transition: background-color 0.3s;
+      backdrop-filter: blur(10px);
+    }
+    
+    .navbar.scrolled {
+      background-color: rgba(20, 20, 20, 0.95);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .logo {
+      color: var(--netflix-red);
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+      transition: transform 0.3s ease;
+    }
+    
+    .logo:hover {
+      transform: scale(1.05);
+    }
+    
+    .nav-profile {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+    }
+    
+    .profile-picture {
+      width: 36px;
+      height: 36px;
+      border-radius: 4px;
+      background-color: #808080;
+      cursor: pointer;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--netflix-white);
+      font-size: 1.2rem;
+    }
+
+    .profile-picture:hover {
+      background-color: var(--netflix-gray);
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: var(--netflix-dark-gray);
+      border-radius: 4px;
+      padding: 10px 0;
+      min-width: 200px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      display: none;
+      z-index: 1000;
+    }
+
+    .dropdown-menu.show {
+      display: block;
+    }
+
+    .dropdown-item {
+      padding: 10px 20px;
+      color: var(--netflix-white);
+      cursor: pointer;
+      transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.1rem;
+    }
+
+    .dropdown-item:hover {
+      background-color: var(--netflix-gray);
+    }
+
+    .dropdown-item i {
+      width: 20px;
+      text-align: center;
+    }
+    
+    .hero {
+      height: 80vh;
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url('/api/placeholder/1920/1080') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 4%;
+      margin-bottom: 50px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, rgba(229, 9, 20, 0.2), transparent);
+      animation: gradientShift 10s ease infinite;
+    }
+    
+    .hero-content {
+      max-width: 800px;
+    }
+    
+    .hero-title {
+      font-size: 4rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    }
+    
+    .hero-subtitle {
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+    
+    .buttons {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .btn {
+      padding: 10px 25px;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.1rem;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+    }
+    
+    .btn:hover::after {
+      width: 300px;
+      height: 300px;
+    }
+    
+    .btn-primary {
+      background-color: var(--netflix-white);
+      color: var(--netflix-black);
+    }
+    
+    .btn-primary:hover {
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .btn-secondary {
+      background-color: rgba(109, 109, 110, 0.7);
+      color: var(--netflix-white);
+    }
+    
+    .btn-secondary:hover {
+      background-color: rgba(109, 109, 110, 0.5);
+    }
+    
+    .tabs-container {
+      padding: 0 4%;
+      margin: 20px 0;
+      position: relative;
+    }
+    
+    .tabs {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      border-bottom: 2px solid var(--netflix-gray);
+      padding: 18px 0;
+      margin-bottom: 28px;
+      overflow-x: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    
+    .tabs::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .tab {
+      color: var(--netflix-white);
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1.1rem;
+      position: relative;
+      padding: 8px 0;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      opacity: 0.7;
+    }
+    
+    .tab.active {
+      color: var(--netflix-white);
+      opacity: 1;
+    }
+    
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--netflix-red);
+      transform: scaleX(1);
+      transition: transform 0.3s ease;
+    }
+    
+    .tab:hover {
+      opacity: 1;
+      transform: translateY(-1.5px);
+    }
+    
+    .content-container {
+      opacity: 1;
+      animation: fadeInUp 0.5s ease-out;
+      padding: 20px 0;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      color: var(--netflix-white);
+      position: relative;
+      padding-left: 15px;
+    }
+    
+    .section-title::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 70%;
+      background-color: var(--netflix-red);
+      border-radius: 2px;
+    }
+    
+    .tiles-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 15px;
+      margin-bottom: 50px;
+    }
+    
+    .tile {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      height: 170px;
+      background-color: var(--netflix-dark-gray);
+    }
+    
+    .tile:hover {
+      transform: scale(1.05);
+      z-index: 2;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+    
+    .tile-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .tile-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 15px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+      transform: translateY(70px);
+      transition: transform 0.3s ease;
+    }
+    
+    .tile:hover .tile-overlay {
+      transform: translateY(0);
+    }
+    
+    .tile-title {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    
+    .tile-desc {
+      font-size: 0.9rem;
+      color: var(--netflix-light-gray);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .footer {
+      padding: 50px 4%;
+      border-top: 1px solid var(--netflix-gray);
+      text-align: center;
+      color: var(--netflix-light-gray);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--netflix-red), transparent);
+    }
+    
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 30px 0;
+    }
+    
+    .social-link {
+      color: var(--netflix-light-gray);
+      font-size: 2rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .social-link:hover {
+      color: var(--netflix-red);
+      transform: translateY(-5px);
+    }
+    
+    .social-link::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: var(--netflix-red);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+    
+    .social-link:hover::after {
+      transform: scaleX(1);
+    }
+    
+    /* About Section Styles */
+    .about-container {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 40px;
+      margin-bottom: 50px;
+      animation: fadeInUp 0.8s ease-out;
+    }
+    
+    .about-image {
+      border-radius: 8px;
+      overflow: hidden;
+      width: 300px;
+      height: 300px;
+      background-color: var(--netflix-dark-gray);
+      position: relative;
+      transition: all 0.5s ease;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .about-image:hover {
+      transform: scale(1.02);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .about-image::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(229, 9, 20, 0.1), transparent);
+      transform: translateX(-100%);
+      transition: 0.5s;
+      z-index: 1;
+    }
+    
+    .about-image:hover::before {
+      transform: translateX(100%);
+    }
+    
+    .about-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .about-image:hover img {
+      transform: scale(1.1);
+    }
+    
+    .about-content {
+      animation: fadeInRight 0.8s ease-out;
+    }
+    
+    .about-content p {
+      margin-bottom: 20px;
+      line-height: 1.6;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+    
+    .about-content p:nth-child(1) {
+      animation-delay: 0.2s;
+    }
+    
+    .about-content p:nth-child(2) {
+      animation-delay: 0.4s;
+    }
+    
+    @keyframes fadeInRight {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Projects Section Styles */
+    .project-details {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 40px;
+      background-color: var(--netflix-dark-gray);
+      padding: 25px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .project-details::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(229, 9, 20, 0.1), transparent);
+      transform: translateX(-100%);
+      transition: 0.5s;
+    }
+    
+    .project-details:hover::before {
+      transform: translateX(100%);
+    }
+    
+    .project-details:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    
+    .project-image {
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      width: 300px;
+      height: 200px;
+      flex-shrink: 0;
+    }
+    
+    .project-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .project-image:hover img {
+      transform: scale(1.1);
+    }
+    
+    .project-info {
+      flex: 1;
+    }
+    
+    .project-info h3 {
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+      color: var(--netflix-white);
+      font-weight: bold;
+    }
+    
+    .project-info p {
+      margin-bottom: 20px;
+      line-height: 1.6;
+      color: var(--netflix-light-gray);
+      font-size: 1.1rem;
+    }
+    
+    .project-meta {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    
+    .project-meta .btn {
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background-color: var(--netflix-red);
+      color: var(--netflix-white);
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .project-meta .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
+      background-color: #ff0a16;
+    }
+    
+    .tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    
+    .tech-tag {
+      background-color: rgba(229, 9, 20, 0.2);
+      color: var(--netflix-white);
+      padding: 8px 15px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .tech-tag:hover {
+      background-color: rgba(229, 9, 20, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(229, 9, 20, 0.2);
+    }
+    
+    /* Skills Section Styles */
+    .skills-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    
+    .skill-category {
+      background-color: var(--netflix-dark-gray);
+      border-radius: 8px;
+      padding: 25px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .skill-category:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .skill-category::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+      );
+      transition: 0.5s;
+    }
+    
+    .skill-category:hover::before {
+      left: 100%;
+    }
+    
+    .skill-category h3 {
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+      color: var(--netflix-red);
+    }
+    
+    .skill-list {
+      list-style: none;
+    }
+    
+    .skill-item {
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .skill-item i {
+      margin-right: 10px;
+      color: var(--netflix-light-gray);
+    }
+    
+    /* Experience Section Styles */
+    .timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .timeline::after {
+      content: '';
+      position: absolute;
+      width: 2px;
+      background-color: var(--netflix-gray);
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -1px;
+    }
+    
+    .timeline-item {
+      padding: 10px 40px;
+      position: relative;
+      width: 50%;
+      box-sizing: border-box;
+      margin-bottom: 30px;
+      opacity: 0;
+      animation: slideIn 0.5s ease-out forwards;
+    }
+    
+    .timeline-item:nth-child(odd) {
+      left: 0;
+    }
+    
+    .timeline-item:nth-child(even) {
+      left: 50%;
+    }
+    
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background-color: var(--netflix-red);
+      border-radius: 50%;
+      top: 15px;
+      right: -8px;
+      z-index: 1;
+    }
+    
+    .timeline-item:nth-child(even)::after {
+      left: -8px;
+    }
+    
+    .timeline-content {
+      background-color: var(--netflix-dark-gray);
+      border-radius: 8px;
+      padding: 25px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .timeline-content::after {
+      content: '';
+      position: absolute;
+      border-width: 10px;
+      border-style: solid;
+      top: 15px;
+    }
+    
+    .timeline-item:nth-child(odd) .timeline-content::after {
+      border-color: transparent transparent transparent var(--netflix-dark-gray);
+      right: -19px;
+    }
+    
+    .timeline-item:nth-child(even) .timeline-content::after {
+      border-color: transparent var(--netflix-dark-gray) transparent transparent;
+      left: -19px;
+    }
+    
+    .timeline-date {
+      color: var(--netflix-red);
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+    .timeline-title {
+      margin-bottom: 5px;
+    }
+    
+    .timeline-company {
+      color: var(--netflix-light-gray);
+      margin-bottom: 10px;
+    }
+    
+    /* Certifications Section Styles */
+    .cert-item {
+      background-color: var(--netflix-dark-gray);
+      border-radius: 8px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .cert-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .cert-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(229, 9, 20, 0.1), transparent);
+      transform: translateX(-100%);
+      transition: 0.5s;
+    }
+    
+    .cert-item:hover::before {
+      transform: translateX(100%);
+    }
+    
+    .cert-logo {
+      width: 80px;
+      height: 80px;
+      flex-shrink: 0;
+      background-color: var(--netflix-gray);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: var(--netflix-white);
+      transition: background-color 0.3s;
+      overflow: hidden;
+    }
+    
+    .cert-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      padding: 12px;
+    }
+    
+    .cert-item:hover .cert-logo {
+      background-color: var(--netflix-red);
+    }
+    
+    .cert-info h3 {
+      margin-bottom: 5px;
+    }
+    
+    .cert-issuer {
+      color: var(--netflix-light-gray);
+      margin-bottom: 10px;
+    }
+    
+    .cert-date {
+      font-size: 0.9rem;
+      color: var(--netflix-light-gray);
+    }
+    
+    .cert-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--netflix-red);
+      text-decoration: none;
+      margin-top: 10px;
+      font-size: 0.9rem;
+      transition: color 0.3s;
+    }
+    
+    .cert-link:hover {
+      color: #ff0a16;
+    }
+    
+    /* Contact Section Styles */
+    .contact-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+    
+    .contact-form {
+      background-color: var(--netflix-dark-gray);
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    
+    .form-input, .form-textarea {
+      width: 100%;
+      padding: 12px;
+      background-color: var(--netflix-gray);
+      border: none;
+      border-radius: 4px;
+      color: var(--netflix-white);
+      font-size: 1rem;
+    }
+    
+    .form-textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+    
+    .form-input:focus, .form-textarea:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--netflix-red);
+    }
+    
+    .btn-submit {
+      background-color: var(--netflix-red);
+      color: var(--netflix-white);
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-size: 1rem;
+      width: 100%;
+    }
+    
+    .btn-submit:hover {
+      background-color: #ff0a16;
+    }
+    
+    .contact-info {
+      background-color: var(--netflix-dark-gray);
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .contact-icon {
+      width: 40px;
+      height: 40px;
+      background-color: rgba(229, 9, 20, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--netflix-red);
+      font-size: 1.2rem;
+    }
+    
+    .contact-text {
+      flex: 1;
+    }
+    
+    .contact-text h4 {
+      margin-bottom: 5px;
+    }
+    
+    .contact-text p {
+      color: var(--netflix-light-gray);
+    }
+    
+    /* Media queries for responsiveness */
+    @media (max-width: 992px) {
+      .about-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .contact-container {
+        grid-width: 1fr;
+      }
+      
+      .timeline::after {
+        left: 31px;
+      }
+      
+      .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+      }
+      
+      .timeline-item:nth-child(even) {
+        left: 0;
+      }
+      
+      .timeline-item::after {
+        left: 23px;
+      }
+      
+      .timeline-content::after {
+        border-color: transparent var(--netflix-dark-gray) transparent transparent;
+        left: -19px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 3rem;
+      }
+      
+      .hero-subtitle {
+        font-size: 1.2rem;
+      }
+      
+      .buttons {
+        flex-direction: column;
+      }
+      
+      .project-details {
+        flex-direction: column;
+      }
+      
+      .project-image {
+        width: 100%;
+        height: 250px;
+      }
+      
+      .project-meta {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .about-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      
+      .about-image {
+        margin: 0 auto;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+      
+      .tabs {
+        overflow-x: auto;
+        padding-bottom: 5px;
+        scrollbar-width: none;
+      }
+      
+      .tabs::-webkit-scrollbar {
+        display: none;
+      }
+      
+      .tab {
+        white-space: nowrap;
+      }
+    }
+
+    /* Add these styles to your existing CSS */
+    .form-status {
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    .form-status.success {
+      background-color: rgba(40, 167, 69, 0.2);
+      color: #28a745;
+    }
+
+    .form-status.error {
+      background-color: rgba(220, 53, 69, 0.2);
+      color: #dc3545;
+    }
+
+    .form-status.info {
+      background-color: rgba(23, 162, 184, 0.2);
+      color: #17a2b8;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: var(--netflix-light-gray);
+    }
+
+    .project-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .project-meta .btn {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+
+    .project-meta .tech-tag {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Add smooth scrolling to the page */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Add these new styles to your existing CSS */
+    @keyframes slideIn {
+      from {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .timeline-item {
+      opacity: 0;
+      animation: slideIn 0.5s ease-out forwards;
+    }
+
+    .timeline-item:nth-child(1) { animation-delay: 0.1s; }
+    .timeline-item:nth-child(2) { animation-delay: 0.2s; }
+    .timeline-item:nth-child(3) { animation-delay: 0.3s; }
+    .timeline-item:nth-child(4) { animation-delay: 0.4s; }
+    .timeline-item:nth-child(5) { animation-delay: 0.5s; }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 30px 0;
+    }
+
+    .social-link {
+      color: var(--netflix-light-gray);
+      font-size: 2rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .social-link:hover {
+      color: var(--netflix-red);
+      transform: translateY(-5px);
+    }
+
+    .social-link::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: var(--netflix-red);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .social-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, rgba(229, 9, 20, 0.2), transparent);
+      animation: gradientShift 10s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .btn {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+    }
+
+    .btn:hover::after {
+      width: 300px;
+      height: 300px;
+    }
+
+    .cert-item {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cert-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(229, 9, 20, 0.1), transparent);
+      transform: translateX(-100%);
+      transition: 0.5s;
+    }
+
+    .cert-item:hover::before {
+      transform: translateX(100%);
+    }
+
+    /* Update the footer styles */
+    .footer {
+      position: relative;
+      overflow: hidden;
+      padding: 50px 4%;
+      background: linear-gradient(to top, var(--netflix-black), var(--netflix-dark-gray));
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--netflix-red), transparent);
+    }
+
+    /* Add a scroll progress indicator */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--netflix-red);
+      transform-origin: 0 50%;
+      transform: scaleX(0);
+      z-index: 1001;
+      box-shadow: 0 2px 4px rgba(229, 9, 20, 0.3);
+    }
+
+    /* Add a subtle background pattern */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(45deg, var(--netflix-black) 25%, transparent 25%),
+        linear-gradient(-45deg, var(--netflix-black) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--netflix-black) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--netflix-black) 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+      opacity: 0.05;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  
+  <script type="text/babel">
+    // Sample data - you would replace this with your actual portfolio content
+    const portfolioData = {
+      name: "Vardhan Yadav",
+      tagline: "Data Analyst, ML Engineer and Frontend Developer",
+      about: {
+        bio: "I'm a passionate Data Analyst and Machine Learning Developer with expertise in modern web technologies. I'm dedicated to creating clean, efficient, and user-friendly applications that solve real-world problems. With a strong foundation in Data Mining and Analytics, Machine Learning and Front-end, I bring a comprehensive approach to every project I undertake. I have contributed to various projects, be it individual or team, and have a good experience in working in a team. Working in a team has helped me to improve my communication skills and teamwork skills, and allowed to take leadership roles in projects.",
+        moreInfo: "When I'm not coding, I enjoy exploring new technologies, contributing to open-source projects, and sharing my knowledge through technical articles and mentoring. I believe in continuous learning and staying updated with the latest industry trends to deliver cutting-edge solutions.",
+      },
+      projects: [
+        {
+          title: "E-Commerce Platform",
+          description: "A full-featured e-commerce platform with payment integration, user authentication, and admin dashboard.",
+          technologies: ["React", "Node.js", "MongoDB", "Redux", "Stripe API"],
+          image: "/api/placeholder/300/180"
+        },
+        {
+          title: "Social Media Dashboard",
+          description: "Analytics dashboard for social media management with real-time data visualization.",
+          technologies: ["Vue.js", "Express", "D3.js", "Socket.IO", "PostgreSQL"],
+          image: "/api/placeholder/300/180"
+        },
+        {
+          title: "AI-Powered Content Generator",
+          description: "Web application that leverages machine learning to generate marketing content for businesses.",
+          technologies: ["React", "Python", "TensorFlow", "Flask", "AWS"],
+          image: "/api/placeholder/300/180"
+        },
+        {
+          title: "Healthcare Management System",
+          description: "Patient management platform for healthcare providers with appointment scheduling and medical records.",
+          technologies: ["Angular", "Spring Boot", "MySQL", "Hibernate", "Docker"],
+          image: "/api/placeholder/300/180"
+        }
+      ],
+      certifications: [
+        {
+          title: "Microsoft Certified: Data Analyst Associate with Power BI",
+          issuer: "Microsoft",
+          date: "August 2024",
+          icon: "microsoft",
+          link: "https://drive.google.com/file/d/1qEPQ0AlDzZ0_bOl7PnKuc3ZWHKwyWdT1/view?usp=sharing"
+        },
+        {
+          title: "AWS Academy Machine Learning Foundations",
+          issuer: "AWS Academy",
+          date: "February 2024",
+          icon: "aws",
+          link: "https://drive.google.com/file/d/1D5zIltNLVuwdd3kSxgoJepVo0tqsOC-_/view?usp=sharing"
+        },
+        {
+          title: "Alteryx Data Preparation",
+          issuer: "Alteryx",
+          date: "January 2025",
+          icon: "alteryx",
+          link: "https://drive.google.com/file/d/1pD5SQm69A6Fqw2KA1yo5AN_YegyAOHE_/view?usp=sharing"
+        },
+        {
+          title: "GitHub Foundations",
+          issuer: "GitHub",
+          date: "December 2024",
+          icon: "github",
+          link: "https://drive.google.com/file/d/1JPFuWfah43lQlB0nw0eEeZ841JNfLAVD/view?usp=sharing"
+        },
+        {
+          title: "Oracle Cloud Infrastructure 2024 Certified Foundations Associate",
+          issuer: "Oracle",
+          date: "October 2024",
+          icon: "oracle",
+          link: "https://drive.google.com/file/d/1OX5zQvZtLW1G-OPzvA5-JzH5TKOCUohC/view?usp=sharing"
+        },
+        {
+          title: "Fortinet Certified Associate in Cybersecurity",
+          issuer: "Fortinet",
+          date: "May 2025",
+          icon: "fortinet",
+          link: "https://drive.google.com/file/d/1jNMVK8v7v0v2Zub6TkZDHUEsW9UonT8Z/view?usp=sharing"
+        }
+      ],
+      experience: [
+        {
+          title: "Corporate relation and Team Management",
+          company: "Placfv's (SRM Placement Student Team)",
+          period: "Aug 2023 - Mar 2025",
+          description: "Part of the SRM Placement Student Team, responsible for corporate relations and team management.The core responsibility was to manage the team and the relations with the companies for the placement drive. To make the placement drive successful, we had to make the students aware of the opportunities and the companies that are coming for the placement drive."
+        },
+        {
+          title: "Winter Fellowship Internship",
+          company: "Indian Institute of Information Technology, Nagpur",
+          period: "Nov 2024 - Jan 2025",
+          description: "Participated in the Fellowship program organized at I.I.I.T Nagpur. Under the guidance of Dr. Vrinda, I have learned about the in-depth concepts of Python, Data Analytics and OOPS concepts using C++.",
+          link: "https://drive.google.com/file/d/1oWS0TqoMMxmHXhITlVeTbyNJfgY5LKnc/view?usp=sharing"
+        },
+        {
+          title: "AI-ML Internship",
+          company: "Google for Developers",
+          period: "April 2024 - June 2024",
+          description: "Virtual internship focused on Artificial Intelligence and Machine Learning concepts using TensorFlow and Keras. A flatform provided by SRM with colaboration of Google for Developers.",
+          link: "https://drive.google.com/file/d/1Vb13r4-JN6nc6iR_6_wktQK804pIslu1/view?usp=sharing"
+        },
+        {
+          title: "SQL Intern",
+          company: "DevSkillHub",
+          period: "Feb 2024 - May 2024",
+          description: "Virtual internship specializing in SQL database management and development. The company provided a platform for learning and working on projects. Provided with matterials and resources for learning SQL in-depth.",
+          link: "https://drive.google.com/file/d/1Z6VJEiB25m_6w6HtaPcZkRhCi84H-aWK/view?usp=sharing"
+        },
+        {
+          title: "Python Programming Internship",
+          company: "VaultOfCode",
+          period: "Dec 2023 - Jan 2024",
+          description: "Virtual internship focused on Python programming and development.The internship gave the insights into the concepts of Python and its applications in real-world problems. They provided learning materials and assignements with weekly deadlines to check the understanding of the concepts.",
+          link: "https://drive.google.com/file/d/15s0McZlASic8GfYBPMo78qfbec8eMAKt/view?usp=sharing"
+        }
+      ],
+      skills: {
+        frontend: ["React", "HTML5/CSS3", "JavaScript/TypeScript"],
+        backend: ["Node.js", "Django", "RESTful APIs"],
+        databases: ["MongoDB", "PostgreSQL", "MySQL", "Firebase"],
+        devops: ["AWS", "Git", "GitHub Actions"],
+        tools: ["Figma", "Adobe", "Trello", "VS Code", "Unity"],
+        dataAnalytics: ["Python", "Tableau", "Power BI", "SQL", "Machine Learning", "Data Visualization", "Statistical Analysis"]
+      },
+      contact: {
+        email: "vardhan1535@gmail.com",
+        phone: "+91 9794416850",
+        location: "Lucknow, Uttar Pradesh, India",
+        linkedin: "https://www.linkedin.com/in/vardhan-yadav-58498324a/",
+        github: "https://github.com/VardhanYadav"
+      },
+      achievements: [
+        {
+          title: "Finalist at BuzzOnEarth Hackathon",
+          description: "Top 10 in the hackathon organised by IIT Kanpur and INTEL. The BuzzOnEarth India Hackathon 2024 aims to focus on leveraging AI to solve some of the most pressing sustainability and climate-related challenges at the city scale. With the theme 'Application of AI for sustainable development of cities,' this year's hackathon brings together the brightest minds from across the nation to develop innovative, tech-driven solutions that address critical challenges in the areas of- Energy, Water, Waste, Mobility, Air Quality, Governance, and Biodiversity.",
+          date: "14-15th Oct, 2024",
+          link: "https://drive.google.com/file/d/1cVB8UnApKhXV1Bk8gfC61tl3D67TySqb/view?usp=sharing"
+        },
+        {
+          title: "Top 1000 in CYI SBI's Ideathon",
+          description: "College Youth Ideathon (CYI 2025) organised by IIT Delhi focuses on innovative ideas and entrepreneurship across ten key sectors, including technology, medicine & biotech, geospatial intelligence, education, agriculture, BFSI, Food & Beverage, Travel & Tourism and Social Impact. The initiative emphasis is to cultivate a 'job-creator's mindset', fostering innovation, problem-solving, and a proactive approach to challenges. More than 3000 students participated in this ideathon.",
+          date: "6th April, 2025",
+          link: "https://drive.google.com/file/d/1Dzw8T1rAJyAxklxTkQEaQi_PEPWxPwAx/view?usp=sharing"
+        }
+      ]
+    };
+    
+    const App = () => {
+      const [activeTab, setActiveTab] = React.useState('about');
+      const [isScrolled, setIsScrolled] = React.useState(false);
+
+      // Scroll to top when page loads
+      React.useEffect(() => {
+        window.scrollTo(0, 0);
+        // Disable scroll restoration
+        if ('scrollRestoration' in history) {
+          history.scrollRestoration = 'manual';
+        }
+      }, []);
+
+      // Function to scroll to section
+      const scrollToSection = (tabName) => {
+        const tabsContainer = document.querySelector('.tabs-container');
+        const tabElement = document.querySelector(`.tab[data-tab="${tabName}"]`);
+        
+        if (tabElement) {
+          const offset = tabsContainer.offsetTop - 68; // 68px is navbar height
+          window.scrollTo({
+            top: offset,
+            behavior: 'smooth'
+          });
+        }
+      };
+      
+      // Handle scroll event to change navbar background
+      React.useEffect(() => {
+        const handleScroll = () => {
+          setIsScrolled(window.scrollY > 50);
+        };
+        
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+          window.removeEventListener('scroll', handleScroll);
+        };
+      }, []);
+
+      // Handle click outside dropdown
+      React.useEffect(() => {
+        const handleClickOutside = (event) => {
+          const dropdown = document.querySelector('.dropdown-menu');
+          const profilePicture = document.querySelector('.profile-picture');
+          if (dropdown && !profilePicture.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.classList.remove('show');
+          }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+          document.removeEventListener('mousedown', handleClickOutside);
+        };
+      }, []);
+
+      // Add scroll progress indicator
+      React.useEffect(() => {
+        const handleScroll = () => {
+          const scrollProgress = document.querySelector('.scroll-progress');
+          const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+          scrollProgress.style.transform = `scaleX(${scrollPercent / 100})`;
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+      }, []);
+
+      // Render the selected tab content
+      const renderContent = () => {
+        switch(activeTab) {
+          case 'about':
+            return <AboutSection data={portfolioData.about} />;
+          case 'projects':
+            return <ProjectsSection projects={portfolioData.projects} />;
+          case 'certifications':
+            return <CertificationsSection certifications={portfolioData.certifications} />;
+          case 'experience':
+            return <ExperienceSection experience={portfolioData.experience} />;
+          case 'achievements':
+            return <AchievementsSection achievements={portfolioData.achievements} />;
+          case 'skills':
+            return <SkillsSection skills={portfolioData.skills} />;
+          case 'contact':
+            return <ContactSection contact={portfolioData.contact} />;
+          default:
+            return <AboutSection data={portfolioData.about} />;
+        }
+      };
+      
+      return (
+        <React.Fragment>
+          <div className="scroll-progress"></div>
+          <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
+            <a href="#" className="logo">V</a>
+            <div className="nav-profile">
+              <div className="profile-picture" onClick={() => {
+                const dropdown = document.querySelector('.dropdown-menu');
+                dropdown.classList.toggle('show');
+              }}>
+                <i className="fas fa-bars"></i>
+              </div>
+              <div className="dropdown-menu">
+                <div className="dropdown-item" onClick={() => {
+                  setActiveTab('about');
+                  scrollToSection('about');
+                }}>
+                  <i className="fas fa-user"></i> About
+                </div>
+                <div className="dropdown-item" onClick={() => {
+                  setActiveTab('projects');
+                  scrollToSection('projects');
+                }}>
+                  <i className="fas fa-project-diagram"></i> Projects
+                </div>
+                <div className="dropdown-item" onClick={() => {
+                  setActiveTab('certifications');
+                  scrollToSection('certifications');
+                }}>
+                  <i className="fas fa-certificate"></i> Certifications
+                </div>
+                <div className="dropdown-item" onClick={() => {
+                  setActiveTab('experience');
+                  scrollToSection('experience');
+                }}>
+                  <i className="fas fa-briefcase"></i> Experience
+                </div>
+                <div className="dropdown-item" onClick={() => {
+                  setActiveTab('achievements');
+                  scrollToSection('achievements');
+                }}>
+                  <i className="fas fa-trophy"></i> Achievements
+                </div>
+                <div className="dropdown-item" onClick={() => {
+                  setActiveTab('skills');
+                  scrollToSection('skills');
+                }}>
+                  <i className="fas fa-code"></i> Technical Skills
+                </div>
+                <div className="dropdown-item" onClick={() => {
+                  setActiveTab('contact');
+                  scrollToSection('contact');
+                }}>
+                  <i className="fas fa-envelope"></i> Contact
+                </div>
+              </div>
+            </div>
+          </nav>
+          
+          <section className="hero">
+            <div className="hero-content">
+              <h1 className="hero-title">{portfolioData.name}</h1>
+              <p className="hero-subtitle">{portfolioData.tagline}</p>
+              <div className="buttons">
+                <button className="btn btn-primary" onClick={() => setActiveTab('projects')}>
+                  <i className="fas fa-play"></i> View Projects
+                </button>
+                <button className="btn btn-secondary" onClick={() => setActiveTab('skills')}>
+                  <i className="fas fa-info-circle"></i> More Info
+                </button>
+              </div>
+            </div>
+          </section>
+          
+          <div className="tabs-container">
+            <div className="tabs">
+              <div 
+                className={`tab ${activeTab === 'about' ? 'active' : ''}`}
+                onClick={() => setActiveTab('about')}
+                data-tab="about"
+              >
+                About
+              </div>
+              <div 
+                className={`tab ${activeTab === 'projects' ? 'active' : ''}`}
+                onClick={() => setActiveTab('projects')}
+                data-tab="projects"
+              >
+                Projects
+              </div>
+              <div 
+                className={`tab ${activeTab === 'certifications' ? 'active' : ''}`}
+                onClick={() => setActiveTab('certifications')}
+                data-tab="certifications"
+              >
+                Certifications
+              </div>
+              <div 
+                className={`tab ${activeTab === 'experience' ? 'active' : ''}`}
+                onClick={() => setActiveTab('experience')}
+                data-tab="experience"
+              >
+                Experience
+              </div>
+              <div 
+                className={`tab ${activeTab === 'achievements' ? 'active' : ''}`}
+                onClick={() => setActiveTab('achievements')}
+                data-tab="achievements"
+              >
+                Achievements
+              </div>
+              <div 
+                className={`tab ${activeTab === 'skills' ? 'active' : ''}`}
+                onClick={() => setActiveTab('skills')}
+                data-tab="skills"
+              >
+                Technical Skills
+              </div>
+              <div 
+                className={`tab ${activeTab === 'contact' ? 'active' : ''}`}
+                onClick={() => setActiveTab('contact')}
+                data-tab="contact"
+              >
+                Contact
+              </div>
+            </div>
+            
+            <div className="content-container" key={activeTab}>
+              {renderContent()}
+            </div>
+          </div>
+          
+          <footer className="footer">
+            <div className="social-links">
+              <a href="https://www.linkedin.com/in/vardhan-yadav-58498324a/" className="social-link" target="_blank"><i class="fab fa-linkedin"></i>
+              </a>
+              <a href="https://github.com/VardhanYadav" className="social-link" target="_blank"><i class="fab fa-github"></i>
+              </a>
+              <a href="https://www.instagram.com/vardy_017/" className="social-link" target="_blank"><i class="fab fa-instagram"></i>
+              </a>
+            </div>
+            <p>&copy; 2025 Vardhan Yadav. All Rights Reserved.</p>
+          </footer>
+        </React.Fragment>
+      );
+    };
+    
+    // About Section Component
+    const AboutSection = ({ data }) => {
+      return (
+        <div className="about-section">
+          <h2 className="section-title">About Me</h2>
+          <div className="about-container">
+            <div className="about-image">
+              <img 
+                src="https://i.pinimg.com/736x/f3/b8/2c/f3b82c9d90b39544bda21db9549c4b82.jpg" 
+                alt="Vardhan Yadav" 
+                className="tile-image"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = 'https://via.placeholder.com/300x300/1a1a1a/ffffff?text=Profile+Photo';
+                }}
+              />
+            </div>
+            <div className="about-content">
+              <p>{data.bio}</p>
+              <p>{data.moreInfo}</p>
+            </div>
+          </div>
+        </div>
+      );
+    };
+    
+    // Projects Section Component
+    const ProjectsSection = ({ projects }) => {
+      const [githubProjects, setGithubProjects] = React.useState([]);
+      const [loading, setLoading] = React.useState(true);
+
+      // Project images mapping
+      const projectImages = {
+        'Health-Risk-Management-System': 'https://img.freepik.com/free-vector/risk-management-concept-illustration_114360-30341.jpg',
+        'City_Cleanliness_Prediction': 'https://img.freepik.com/free-vector/city-skyline-concept-illustration_114360-8923.jpg',
+        'Energy-Consumption-Tracking-System': 'https://static.vecteezy.com/system/resources/previews/026/994/817/non_2x/sustainability-concept-energy-saving-reduce-energy-consumption-at-home-unplug-appliances-and-use-energy-saving-light-bulb-modern-flat-cartoon-style-illustration-on-white-background-vector.jpg',
+        'Student-Finance-Management-System': 'https://img.freepik.com/premium-vector/illustration-vector-graphic-cartoon-character-financial-management_516790-818.jpg',
+        'Movie-Recommendation-System-Using-Information-Retrieval': 'https://bijou.uiowa.edu/sites/bijou.uiowa.edu/files/styles/ultrawide__1312_x_562/public/2024-10/Academy-Award-for-Best-Animated-Feature-Film-Full-List-Featured.jpg?h=d1cb525d&itok=6y-rzKNa'
+      };
+
+      React.useEffect(() => {
+        // Fetch GitHub repositories
+        fetch('https://api.github.com/users/VardhanYadav/repos')
+          .then(response => response.json())
+          .then(data => {
+            // Define the order of projects
+            const projectOrder = [
+              'Health-Risk-Management-System',
+              'City_Cleanliness_Prediction',
+              'Energy-Consumption-Tracking-System',
+              'Student-Finance-Management-System',
+              'Movie-Recommendation-System-Using-Information-Retrieval'
+            ];
+
+            // Filter and sort projects
+            const formattedProjects = data
+              .filter(repo => projectOrder.includes(repo.name))
+              .sort((a, b) => projectOrder.indexOf(a.name) - projectOrder.indexOf(b.name))
+              .map(repo => ({
+                title: repo.name,
+                description: repo.description || 'No description available',
+                technologies: repo.topics || [],
+                image: projectImages[repo.name],
+                github_url: repo.html_url,
+                language: repo.language
+              }));
+
+            setGithubProjects(formattedProjects);
+            setLoading(false);
+          })
+          .catch(error => {
+            console.error('Error fetching GitHub projects:', error);
+            setLoading(false);
+          });
+      }, []);
+
+      if (loading) {
+        return (
+          <div className="projects-section">
+            <h2 className="section-title">My Projects</h2>
+            <div className="loading">Loading projects...</div>
+          </div>
+        );
+      }
+
+      return (
+        <div className="projects-section">
+          <h2 className="section-title">My Projects</h2>
+          {githubProjects.map((project, index) => (
+            <div className="project-details" key={index}>
+              <div className="project-image">
+                <img 
+                  src={project.image} 
+                  alt={project.title} 
+                  className="tile-image"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = 'https://via.placeholder.com/300x200/1a1a1a/ffffff?text=Project+Image';
+                  }}
+                />
+              </div>
+              <div className="project-info">
+                <h3>{project.title}</h3>
+                <p>{project.description}</p>
+                <div className="project-meta">
+                  {project.language && (
+                    <span className="tech-tag">
+                      <i className="fas fa-code"></i> {project.language}
+                    </span>
+                  )}
+                  <a href={project.github_url} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+                    <i className="fab fa-github"></i> View on GitHub
+                  </a>
+                </div>
+                <div className="tech-tags">
+                  {project.technologies.map((tech, i) => (
+                    <span className="tech-tag" key={i}>{tech}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    };
+    
+    // Certifications Section Component
+    const CertificationsSection = ({ certifications }) => {
+      return (
+        <div className="certifications-section">
+          <h2 className="section-title">My Certifications</h2>
+          <div className="cert-list">
+            {certifications.map((cert, index) => (
+              <div className="cert-item" key={index}>
+                <div className="cert-logo">
+                  {cert.icon === 'alteryx' ? (
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrCQEawi17ptwq11DFEOh6T5FXPOItsfcYQQ&s" alt={cert.issuer} />
+                  ) : cert.icon === 'oracle' ? (
+                    <img src="https://images.icon-icons.com/2699/PNG/512/oracle_logo_icon_168918.png" alt={cert.issuer} />
+                  ) : cert.icon === 'fortinet' ? (
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzCjxmAEVoMsVU4bnAe7hSbUEKRTGkn1sPnQ&s" alt={cert.issuer} />
+                  ) : cert.icon === 'github' ? (
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQnP-QDYkzllj7UPRcID92nMHX0YokwS96pA&s" alt={cert.issuer} />
+                  ) : cert.icon === 'microsoft' ? (
+                    <img src="https://seeklogo.com/images/M/microsoft-logo-83ECA0A7A4-seeklogo.com.png" alt={cert.issuer} />
+                  ) : cert.icon === 'aws' ? (
+                    <img src="https://i.pinimg.com/736x/4a/41/7d/4a417d1f8cab870d4e93498ae1ae2d21.jpg" alt={cert.issuer} />
+                  ) : (
+                    <i className={`fab ${cert.icon}`}></i>
+                  )}
+                </div>
+                <div className="cert-info">
+                  <h3>{cert.title}</h3>
+                  <div className="cert-issuer">{cert.issuer}</div>
+                  <div className="cert-date">{cert.date}</div>
+                  <a href={cert.link} target="_blank" rel="noopener noreferrer" className="cert-link">
+                    <i className="fas fa-external-link-alt"></i> View Certificate
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+    
+    // Experience Section Component
+    const ExperienceSection = ({ experience }) => {
+      return (
+        <div className="experience-section">
+          <h2 className="section-title">Work Experience</h2>
+          <div className="timeline">
+            {experience.map((exp, index) => (
+              <div className="timeline-item" key={index}>
+                <div className="timeline-content">
+                  <div className="timeline-date">{exp.period}</div>
+                  <h3 className="timeline-title">{exp.title}</h3>
+                  <div className="timeline-company">{exp.company}</div>
+                  <p>{exp.description}</p>
+                  {exp.link && (
+                    <a href={exp.link} target="_blank" rel="noopener noreferrer" className="cert-link">
+                      <i className="fas fa-external-link-alt"></i> View Certificate
+                    </a>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+    
+    // Skills Section Component
+    const SkillsSection = ({ skills }) => {
+      const categories = [
+        { name: "Data Mining & Analytics", skills: skills.dataAnalytics, icon: "fa-chart-line" },
+        { name: "Frontend Development", skills: skills.frontend, icon: "fa-code" },
+        { name: "Backend Development", skills: skills.backend, icon: "fa-server" },
+        { name: "Databases", skills: skills.databases, icon: "fa-database" },
+        { name: "DevOps & Deployment", skills: skills.devops, icon: "fa-cloud" },
+        { name: "Tools & Software", skills: skills.tools, icon: "fa-tools" }
+      ];
+      
+      return (
+        <div className="skills-section">
+          <h2 className="section-title">Technical Skills</h2>
+          <div className="skills-container">
+            {categories.map((category, index) => (
+              <div className="skill-category" key={index}>
+                <h3><i className={`fas ${category.icon}`}></i> {category.name}</h3>
+                <ul className="skill-list">
+                  {category.skills.map((skill, i) => (
+                    <li className="skill-item" key={i}>
+                      <i className="fas fa-check-circle"></i>
+                      {skill}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+    
+    // Contact Section Component
+    const ContactSection = ({ contact }) => {
+      const [formStatus, setFormStatus] = React.useState({ type: '', message: '' });
+
+      React.useEffect(() => {
+        // Initialize EmailJS with your public key
+        emailjs.init("S1Sc90jC74cDuTT9A");
+        console.log("EmailJS initialized");
+      }, []);
+
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        setFormStatus({ type: 'info', message: 'Sending message...' });
+
+        try {
+          const formData = new FormData(e.target);
+          const templateParams = {
+            to_email: 'vardhan1535@gmail.com',
+            to_name: 'Vardhan',
+            from_name: formData.get('name'),
+            from_email: formData.get('email'),
+            subject: formData.get('subject'),
+            message: formData.get('message')
+          };
+
+          console.log('Template params:', templateParams);
+
+          const response = await emailjs.send(
+            'service_o8uk70y',
+            'template_310504',
+            templateParams,
+            'S1Sc90jC74cDuTT9A'
+          );
+
+          console.log('SUCCESS!', response.text);
+          setFormStatus({ type: 'success', message: 'Message sent successfully!' });
+          e.target.reset();
+        } catch (error) {
+          console.error('FAILED...', error);
+          setFormStatus({ 
+            type: 'error', 
+            message: `Failed to send message: ${error.text || 'Unknown error occurred'}`
+          });
+        }
+      };
+
+      return (
+        <div className="contact-section">
+          <h2 className="section-title">Get In Touch</h2>
+          <div className="contact-container">
+            <form className="contact-form" onSubmit={handleSubmit}>
+              {formStatus.message && (
+                <div className={`form-status ${formStatus.type}`}>
+                  {formStatus.message}
+                </div>
+              )}
+              <div className="form-group">
+                <label className="form-label">Name</label>
+                <input type="text" name="name" className="form-input" placeholder="Your Name" required />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Email</label>
+                <input type="email" name="email" className="form-input" placeholder="Your Email" required />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Subject</label>
+                <input type="text" name="subject" className="form-input" placeholder="Subject" required />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Message</label>
+                <textarea name="message" className="form-textarea" placeholder="Your Message" required></textarea>
+              </div>
+              <button type="submit" className="btn-submit">Send Message</button>
+            </form>
+            
+            <div className="contact-info">
+              <div className="contact-item">
+                <div className="contact-icon">
+                  <i className="fas fa-envelope"></i>
+                </div>
+                <div className="contact-text">
+                  <h4>Email</h4>
+                  <p>{contact.email}</p>
+                </div>
+              </div>
+              
+              <div className="contact-item">
+                <div className="contact-icon">
+                  <i className="fas fa-phone"></i>
+                </div>
+                <div className="contact-text">
+                  <h4>Phone</h4>
+                  <p>{contact.phone}</p>
+                </div>
+              </div>
+              
+              <div className="contact-item">
+                <div className="contact-icon">
+                  <i className="fas fa-map-marker-alt"></i>
+                </div>
+                <div className="contact-text">
+                  <h4>Location</h4>
+                  <p>{contact.location}</p>
+                </div>
+              </div>
+              
+              <div className="contact-item">
+                <div className="contact-icon">
+                  <i className="fab fa-linkedin"></i>
+                </div>
+                <div className="contact-text">
+                  <h4>LinkedIn</h4>
+                  <p>{contact.linkedin}</p>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+    
+    // Achievements Section Component
+    const AchievementsSection = ({ achievements }) => {
+      return (
+        <div className="achievements-section">
+          <h2 className="section-title">Achievements</h2>
+          <div className="tiles-container">
+            {achievements.map((ach, idx) => (
+              <div className="tile" key={idx} style={{
+                height: 'auto',
+                minHeight: 'auto',
+                backgroundColor: 'var(--netflix-dark-gray)',
+                padding: '25px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '15px',
+                borderRadius: '8px',
+                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+              }}>
+                <div className="tile-overlay" style={{
+                  transform: 'none',
+                  background: 'none',
+                  padding: '0',
+                  position: 'relative',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '15px'
+                }}>
+                  <div className="tile-title" style={{
+                    fontSize: '1.4rem',
+                    color: 'var(--netflix-white)',
+                    fontWeight: 'bold',
+                    lineHeight: '1.4',
+                    textAlign: 'justify'
+                  }}>{ach.title}</div>
+                  <div className="tile-desc" style={{
+                    fontSize: '1rem',
+                    color: 'var(--netflix-light-gray)',
+                    lineHeight: '1.6',
+                    whiteSpace: 'normal',
+                    overflow: 'visible',
+                    textOverflow: 'clip',
+                    display: 'block',
+                    textAlign: 'justify'
+                  }}>{ach.description}</div>
+                  <div className="tile-date" style={{
+                    color: 'var(--netflix-red)',
+                    fontWeight: 'bold',
+                    fontSize: '1.1rem',
+                    marginTop: '10px',
+                    textAlign: 'justify'
+                  }}>{ach.date}</div>
+                  {ach.link && (
+                    <a href={ach.link} target="_blank" rel="noopener noreferrer" className="cert-link" style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      color: 'var(--netflix-red)',
+                      textDecoration: 'none',
+                      fontSize: '1rem',
+                      transition: 'all 0.3s ease',
+                      marginTop: '10px',
+                      textAlign: 'justify'
+                    }}>
+                      <i className="fas fa-external-link-alt"></i> View Certificate
+                    </a>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+    
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+</html>
